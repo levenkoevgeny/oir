@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Панель управления{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Панель управления</h1>
+
+        <h3>Список тестов</h3>
+        <ul class="list-group">
+            {% if all_tests_list %}
+                {% for test in all_tests_list %}
+                    <li class="list-group-item"><a href="{% url 'test_data:dashboard_test_result' test.id %}"
+                                                   class="link-secondary">{{ test.test_name }}</a><br>
+                        <small>{{ test.extra_data }}</small>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <h5>Список пуст</h5>
+            {% endif %}
+        </ul>
+
+        <div>
+        </div>
+    </div>
+
+{% endblock %}

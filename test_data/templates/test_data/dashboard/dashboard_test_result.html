@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% load dict_tags %}
+
+{% block title %}Результаты теста - {{ current_test.test_name }}{% endblock %}
+{% block content %}
+
+
+{#    {% for key, value in cadet_results_dict.items %}#}
+{#        <tr>#}
+{#            <td> Key: {{ key }} </td>#}
+{#            <td> Value: {{ value }} </td>#}
+{#            <br>#}
+{#        </tr>#}
+{#    {% endfor %}#}
+
+
+
+
+
+    <div class="container">
+        <h1 class="mb-3">{{ current_test.test_name }}</h1>
+        <h2>Курсанты</h2>
+        <h3>Распределение по факультетам</h3>
+        <div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    {% for faculty in faculties_list %}
+                        <th scope="col" class="text-center">{{ faculty.faculty_name }}</th>
+                    {% endfor %}
+                    <th class="text-center">Всего по факультетам</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for question in current_test.question_set.all %}
+                    {% with quest_dict=cadet_results_dict|get_sub_dict:question.id %}
+                        <tr>
+                            <td colspan="{{ faculties_list.count|add:"2" }}">{{ question }}</td>
+                            {% for answer in question.answer_set.all %}
+                                {% with answer_dict=quest_dict|get_sub_dict:answer.id %}
+                                <tr>
+                                    <td>{{ answer }}</td>
+                                    {% for faculty in faculties_list %}
+                                        <td class="text-center">{{ answer_dict|get_value_form_dict:faculty.id }}</td>
+                                    {% endfor %}
+                                    <td class="text-center">{{ answer_dict|get_value_form_dict:"all" }}</td>
+                                </tr>
+                                {% endwith %}
+                            {% endfor %}
+                        </tr>
+                    {% endwith %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <h3>Распределение по курсам</h3>
+        <br>
+        <br>
+        <br>
+        <h2>Переменный состав</h2>
+        <h3>Распределение по подразделениям</h3>
+        <div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    {% for subdivision in subdivision_list %}
+                        <th scope="col" class="text-center">{{ subdivision.subdivision_name }}</th>
+                    {% endfor %}
+                    <th class="text-center">Всего по подразделениям</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for question in current_test.question_set.all %}
+                    {% with quest_dict=pps_results_dict|get_sub_dict:question.id %}
+                    <tr>
+                        <td colspan="{{ subdivision_list.count|add:"2" }}">{{ question }}</td>
+                        {% for answer in question.answer_set.all %}
+                            {% with answer_dict=quest_dict|get_sub_dict:answer.id %}
+                            <tr>
+                                <td>{{ answer }}</td>
+                                {% for subdivision in subdivision_list %}
+                                    <td class="text-center">{{ answer_dict|get_value_form_dict:subdivision.id }}</td>
+                                {% endfor %}
+                                <td class="text-center">{{ answer_dict|get_value_form_dict:"all" }}</td>
+                            </tr>
+                            {% endwith %}
+                        {% endfor %}
+                    </tr>
+                     {% endwith %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

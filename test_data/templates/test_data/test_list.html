@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Список тестов{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <ul class="list-group">
+            {% if all_tests_list %}
+                {% for test in all_tests_list %}
+                    <li class="list-group-item"><a href="{% url 'test_data:test_running' test.id %}"
+                                                   class="link-secondary">{{ test.test_name }}</a><br>
+                        <small>{{ test.extra_data }}</small>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <h5>Список пуст</h5>
+            {% endif %}
+        </ul>
+    </div>
+
+{% endblock %}
