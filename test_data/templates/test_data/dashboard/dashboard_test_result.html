@@ -9,6 +9,8 @@
     <div class="container p-3" style="background-color: white;">
         <div class="alert alert-success" role="alert">
             <h1 class="mb-3">{{ current_test.test_name }}</h1>
+            <h5>Всего пройдено тестов - {{ all_results_count }}</h5>
+            <h5>Из них: курсанты - {{ cadet_results_count }}, переменный состав - {{ pps_results_count }}</h5>
         </div>
         <div class="alert alert-primary" role="alert">
             <h2>Курсанты</h2>
@@ -49,8 +51,39 @@
         </div>
         <br>
         <h3>Распределение по курсам</h3>
-        <br>
-        <br>
+        <div>
+            <table class="table table-hover table-bordered">
+                <thead class="table-warning">
+                <tr>
+                    <th></th>
+                    {% for course in courses_list %}
+                        <th scope="col" class="text-center">{{ course.course_name }}</th>
+                    {% endfor %}
+                    <th class="text-center">Всего по курсам</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for question in current_test.question_set.all %}
+                    {% with quest_dict=cadet_results_courses_dict|get_sub_dict:question.id %}
+                        <tr>
+                            <td colspan="{{ courses_list.count|add:"2" }}">{{ question }}</td>
+                            {% for answer in question.answer_set.all %}
+                                {% with answer_dict=quest_dict|get_sub_dict:answer.id %}
+                                    <tr>
+                                        <td>{{ answer }}</td>
+                                        {% for course in courses_list %}
+                                            <td class="text-center">{{ answer_dict|get_value_form_dict:course.id }}</td>
+                                        {% endfor %}
+                                        <td class="text-center">{{ answer_dict|get_value_form_dict:"all" }}</td>
+                                    </tr>
+                                {% endwith %}
+                            {% endfor %}
+                        </tr>
+                    {% endwith %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
         <br>
 
         <div class="alert alert-primary" role="alert">

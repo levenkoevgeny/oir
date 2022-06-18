@@ -4,6 +4,9 @@ from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from .models import TestData, Subdivision, Faculty, Course, QuestionaryData, EmployeeKind, TestResult, Answer
 
+EMPLOYEE_CADET_ID = 1
+EMPLOYEE_PPS_ID = 2
+
 
 def tests_list(request):
     all_tests_list = TestData.objects.all()
@@ -78,12 +81,14 @@ def dashboard_main(request):
 def dashboard_test_result(request, test_id):
     current_test = get_object_or_404(TestData, pk=test_id)
     faculties_list = Faculty.objects.all()
+    courses_list = Course.objects.all()
     subdivision_list = Subdivision.objects.all()
 
-    cadet_results = TestResult.objects.filter(questionary_data__employee_kind_id=1)
-    pps_results = TestResult.objects.filter(questionary_data__employee_kind_id=2)
+    cadet_results = TestResult.objects.filter(questionary_data__employee_kind_id=EMPLOYEE_CADET_ID)
+    pps_results = TestResult.objects.filter(questionary_data__employee_kind_id=EMPLOYEE_PPS_ID)
 
     cadet_results_dict = {}
+    cadet_results_courses_dict = {}
     pps_results_dict = {}
 
     for question in current_test.question_set.all():
@@ -101,6 +106,18 @@ def dashboard_test_result(request, test_id):
     for question in current_test.question_set.all():
         answer_res_dict = {}
         for answer in question.answer_set.all():
+            course_res_dict = {}
+            for course in courses_list:
+                course_res_dict[str(course.id)] = cadet_results.filter(questionary_data__course=course,
+                                                                       question=question, answer=answer).count()
+            course_res_dict['all'] = cadet_results.filter(questionary_data__course__in=courses_list,
+                                                          question=question, answer=answer).count()
+            answer_res_dict[str(answer.id)] = course_res_dict
+        cadet_results_courses_dict[str(question.id)] = answer_res_dict
+
+    for question in current_test.question_set.all():
+        answer_res_dict = {}
+        for answer in question.answer_set.all():
             subdivision_res_dict = {}
             for subdivision in subdivision_list:
                 subdivision_res_dict[str(subdivision.id)] = pps_results.filter(
@@ -113,8 +130,13 @@ def dashboard_test_result(request, test_id):
 
     return render(request, 'test_data/dashboard/dashboard_test_result.html', {
         'cadet_results_dict': cadet_results_dict,
+        'cadet_results_courses_dict': cadet_results_courses_dict,
         'pps_results_dict': pps_results_dict,
         'current_test': current_test,
         'faculties_list': faculties_list,
+        'courses_list': courses_list,
         'subdivision_list': subdivision_list,
+        'cadet_results_count': QuestionaryData.objects.filter(employee_kind=EMPLOYEE_CADET_ID).count(),
+        'pps_results_count': QuestionaryData.objects.filter(employee_kind=EMPLOYEE_PPS_ID).count(),
+        'all_results_count': QuestionaryData.objects.all().count(),
     })

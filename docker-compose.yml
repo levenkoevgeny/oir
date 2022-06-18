@@ -1,0 +1,26 @@
+version: "3.3"
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=oir
+      - POSTGRES_USER=levenko
+      - POSTGRES_PASSWORD=1986
+  web:
+    build: .
+    command: >
+      sh -c "python manage.py collectstatic --noinput &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_NAME=oir
+      - POSTGRES_USER=levenko
+      - POSTGRES_PASSWORD=1986
+    depends_on:
+      - db
+
