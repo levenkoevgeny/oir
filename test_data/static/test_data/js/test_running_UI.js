@@ -1,5 +1,5 @@
-const EMPLOYEE_KIND_CADET = 1
-const EMPLOYEE_KIND_PPS = 2
+const EMPLOYEE_KIND_CADET = 3
+const EMPLOYEE_KIND_PPS = 4
 
 
 $("#employee_kind_id").change(function () {

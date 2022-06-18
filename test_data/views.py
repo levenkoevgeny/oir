@@ -4,8 +4,8 @@ from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from .models import TestData, Subdivision, Faculty, Course, QuestionaryData, EmployeeKind, TestResult, Answer
 
-EMPLOYEE_CADET_ID = 1
-EMPLOYEE_PPS_ID = 2
+EMPLOYEE_CADET_ID = 3
+EMPLOYEE_PPS_ID = 4
 
 
 def tests_list(request):
