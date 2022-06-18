@@ -9,9 +9,5 @@ urlpatterns = [
     path('success', views.success_page, name='success_page'),
     path('dashboard', views.dashboard_main, name='dashboard_main'),
     path('dashboard/tests/<test_id>', views.dashboard_test_result, name='dashboard_test_result'),
-    # path('subjects/<subject_id>/tests', views.test_list, name='test_list'),
-    # path('subjects/<subject_id>/test/<test_id>/passing', views.test_passing, name='test_passing'),
-    # path('subjects/<subject_id>/test/<test_id>/result', views.test_result, name='test_result'),
-    # path('subjects/<subject_id>/test/<test_id>/result/<result_id>', views.test_result, name='test_result'),
-    # path('results', views.test_all_results, name='test_all_results'),
+    path('dashboard/tests/<test_id>/charts', views.dashboard_test_charts, name='dashboard_test_charts'),
 ]

@@ -140,3 +140,7 @@ def dashboard_test_result(request, test_id):
         'pps_results_count': QuestionaryData.objects.filter(employee_kind=EMPLOYEE_PPS_ID).count(),
         'all_results_count': QuestionaryData.objects.all().count(),
     })
+
+
+def dashboard_test_charts(request, test_id):
+    return render(request, 'test_data/dashboard/dashboard_test_charts.html')
