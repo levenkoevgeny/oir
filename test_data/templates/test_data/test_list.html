@@ -5,12 +5,22 @@
 
 {% block content %}
     <div class="container">
+
+        <div style="background-color: #6f42c1; height: 150px;"
+             class="d-flex align-items-center p-3 my-3 rounded-3 text-white">
+            <img src="" alt="">
+            <div>
+                <h1>Академия МВД Республики Беларусь</h1>
+                <small>Отдел идеологической работы</small>
+            </div>
+        </div>
+
+
         <ul class="list-group">
             {% if all_tests_list %}
                 {% for test in all_tests_list %}
-                    <li class="list-group-item"><a href="{% url 'test_data:test_running' test.id %}"
+                    <li class="list-group-item mb-3"><a href="{% url 'test_data:test_running' test.id %}"
                                                    class="link-secondary">{{ test.test_name }}</a><br>
-                        <small>{{ test.extra_data }}</small>
                     </li>
                 {% endfor %}
             {% else %}

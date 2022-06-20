@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% load dict_tags %}
+
+{% block title %}Результаты теста - {{ current_test.test_name }}{% endblock %}
+{% block content %}
+
+
+    <div class="container-fluid p-3" style="background-color: white;">
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th></th>
+                {% for question in question_list %}
+                    <th scope="col">{{ question.question_text }}</th>
+                {% endfor %}
+
+            </tr>
+
+            </thead>
+            <tbody>
+            {% for questionary in questionary_list %}
+                <tr>
+                    <td>{{ questionary.employee_kind }}</td>
+                    <td>1</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                </tr>
+            {% endfor %}
+
+
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block js %}{% endblock %}

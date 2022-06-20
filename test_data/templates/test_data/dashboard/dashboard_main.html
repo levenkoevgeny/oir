@@ -12,8 +12,8 @@
             {% if all_tests_list %}
                 {% for test in all_tests_list %}
                     <li class="list-group-item"><a href="{% url 'test_data:dashboard_test_result' test.id %}"
-                                                   class="link-secondary">{{ test.test_name }}</a><br>
-                        <small>{{ test.extra_data }}</small>
+                                                   class="link-secondary">{{ test.test_name }}(проценты)</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'test_data:dashboard_test_full' test.id %}"
+                                                   class="link-secondary">{{ test.test_name }} (полная раскладка)</a><br>
                     </li>
                 {% endfor %}
             {% else %}

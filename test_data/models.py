@@ -1,6 +1,17 @@
 from django.db import models
 
 
+SINGLE = 1
+MULTIPLE = 2
+TEXT = 3
+
+QUESTION_TYPE_CHOICES = (
+    (SINGLE, 'Single (radio)'),
+    (MULTIPLE, 'Multiple (checkbox)'),
+    (TEXT, 'Text field'),
+)
+
+
 class EmployeeKind(models.Model):
     employee_kind = models.CharField(verbose_name="Вид сотрудника", max_length=255)
 
@@ -82,12 +93,13 @@ class TestData(models.Model):
 
 
 class Question(models.Model):
+    question_type = models.IntegerField(verbose_name="Тип вопроса", choices=QUESTION_TYPE_CHOICES, default=SINGLE)
     test_data = models.ForeignKey(TestData, on_delete=models.CASCADE, verbose_name="Тест")
     question_text = models.CharField(verbose_name="Текст вопроса", max_length=255)
-    has_multiple_choice = models.BooleanField(verbose_name="Множественные ответы(checkbox)")
+    index_number = models.IntegerField(verbose_name="Порядковый номер вопроса", blank=True, null=True)
 
     def __str__(self):
-        return self.question_text
+        return self.question_text + ' ' + str(self.question_type)
 
     class Meta:
         ordering = ('id',)
@@ -98,6 +110,8 @@ class Question(models.Model):
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name="Вопрос")
     answer_text = models.CharField(verbose_name="Текст ответа", max_length=255)
+    has_extra_data = models.BooleanField(verbose_name="Имеет дополнительную информацию", default=False)
+    index_number = models.IntegerField(verbose_name="Порядковый номер ответа", blank=True, null=True)
 
     def __str__(self):
         return self.answer_text
@@ -111,10 +125,12 @@ class Answer(models.Model):
 class TestResult(models.Model):
     questionary_data = models.ForeignKey(QuestionaryData, on_delete=models.CASCADE, verbose_name="Данные анкеты")
     question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name="Вопрос")
-    answer = models.ForeignKey(Answer, on_delete=models.CASCADE, verbose_name="Ответ")
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE, verbose_name="Ответ", blank=True, null=True)
+    answer_text = models.TextField(verbose_name="Ответ (текстовый)", blank=True, null=True)
+    extra_data = models.TextField(verbose_name="Дополнительная информация к ответу", blank=True, null=True)
 
     def __str__(self):
-        return self.questionary_data.employee_kind.employee_kind + ' ' + self.question.question_text + ' ' + self.answer.answer_text
+        return self.questionary_data.employee_kind.employee_kind + ' ' + self.question.question_text
 
     class Meta:
         ordering = ('id',)

@@ -10,4 +10,5 @@ urlpatterns = [
     path('dashboard', views.dashboard_main, name='dashboard_main'),
     path('dashboard/tests/<test_id>', views.dashboard_test_result, name='dashboard_test_result'),
     path('dashboard/tests/<test_id>/charts', views.dashboard_test_charts, name='dashboard_test_charts'),
+    path('dashboard/tests/<test_id>/full', views.dashboard_test_full, name='dashboard_test_full'),
 ]

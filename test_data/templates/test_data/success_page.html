@@ -5,7 +5,16 @@
 
 {% block content %}
     <div class="container">
-        Спасибо за анкетирование!
-    </div>
 
+        <div style="background-color: white;height: 150px;" class="p-3 my-3 rounded-3 d-flex justify-content-center align-items-center flex-column">
+            <h1>Спасибо за анкетирование!</h1>
+            <a href="" class="link-secondary"><h3>Вернуться на главную</h3></a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        setTimeout(() => window.location.href = '/', 5000);
+    </script>
 {% endblock %}
