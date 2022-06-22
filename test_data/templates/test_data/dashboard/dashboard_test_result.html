@@ -4,13 +4,11 @@
 
 {% block title %}Результаты теста - {{ current_test.test_name }}{% endblock %}
 {% block content %}
-
-
     <div class="container p-3" style="background-color: white;">
         <div class="alert alert-success" role="alert">
             <h1 class="mb-3">{{ current_test.test_name }}</h1>
             <h5>Всего пройдено тестов - {{ all_results_count }}</h5>
-            <h5>Из них: курсанты - {{ cadet_results_count }}, переменный состав - {{ pps_results_count }}</h5>
+            <h5>Из них: курсанты - {{ cadet_results_count }}, постоянный состав - {{ pps_results_count }}</h5>
         </div>
         <div class="alert alert-primary" role="alert">
             <h2>Курсанты</h2>

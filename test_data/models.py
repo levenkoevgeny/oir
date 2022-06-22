@@ -60,7 +60,22 @@ class Course(models.Model):
         verbose_name_plural = 'Courses'
 
 
+class TestData(models.Model):
+    test_name = models.CharField(verbose_name="Название теста", max_length=255)
+    extra_data = models.TextField(verbose_name="Дополнительная информация", blank=True, null=True)
+    data_created = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
+
+    def __str__(self):
+        return self.test_name
+
+    class Meta:
+        ordering = ('id',)
+        verbose_name = 'TestData'
+        verbose_name_plural = '1 TestsData'
+
+
 class QuestionaryData(models.Model):
+    test = models.ForeignKey(TestData, verbose_name="Тест", on_delete=models.CASCADE, blank=True, null=True)
     employee_kind = models.ForeignKey(EmployeeKind, verbose_name="Тип сотрудника", on_delete=models.CASCADE)
     subdivision = models.ForeignKey(Subdivision, on_delete=models.CASCADE, verbose_name="Подразделение", blank=True,
                                     null=True)
@@ -76,20 +91,6 @@ class QuestionaryData(models.Model):
         ordering = ('id',)
         verbose_name = 'QuestionaryData'
         verbose_name_plural = 'QuestionaryData'
-
-
-class TestData(models.Model):
-    test_name = models.CharField(verbose_name="Название теста", max_length=255)
-    extra_data = models.TextField(verbose_name="Дополнительная информация", blank=True, null=True)
-    data_created = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
-
-    def __str__(self):
-        return self.test_name
-
-    class Meta:
-        ordering = ('id',)
-        verbose_name = 'TestData'
-        verbose_name_plural = '1 TestsData'
 
 
 class Question(models.Model):

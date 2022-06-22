@@ -28,6 +28,7 @@ def tests_running(request, test_id):
             'course'] != '' else None
 
         new_questionary_data = QuestionaryData(
+            test=get_object_or_404(TestData, pk=test_id),
             employee_kind=employee_kind,
             subdivision=subdivision,
             faculty=faculty,
@@ -108,7 +109,7 @@ def dashboard_test_result(request, test_id):
     question_set = current_test.question_set.filter(question_type__in=[SINGLE, MULTIPLE])
     faculties_list = Faculty.objects.all()
     courses_list = Course.objects.all()
-    subdivision_list = Subdivision.objects.filter(id__in=[1, 2, 3])
+    subdivision_list = Subdivision.objects.all()
 
     cadet_results = TestResult.objects.filter(questionary_data__employee_kind_id=EMPLOYEE_CADET_ID)
     pps_results = TestResult.objects.filter(questionary_data__employee_kind_id=EMPLOYEE_PPS_ID)
@@ -163,9 +164,9 @@ def dashboard_test_result(request, test_id):
         'faculties_list': faculties_list,
         'courses_list': courses_list,
         'subdivision_list': subdivision_list,
-        'cadet_results_count': QuestionaryData.objects.filter(employee_kind=EMPLOYEE_CADET_ID).count(),
-        'pps_results_count': QuestionaryData.objects.filter(employee_kind=EMPLOYEE_PPS_ID).count(),
-        'all_results_count': QuestionaryData.objects.all().count(),
+        'cadet_results_count': QuestionaryData.objects.filter(employee_kind=EMPLOYEE_CADET_ID, test_id=test_id).count(),
+        'pps_results_count': QuestionaryData.objects.filter(employee_kind=EMPLOYEE_PPS_ID, test_id=test_id).count(),
+        'all_results_count': QuestionaryData.objects.filter(test_id=test_id).count(),
     })
 
 

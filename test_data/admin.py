@@ -6,7 +6,6 @@ admin.site.register(EmployeeKind)
 admin.site.register(Subdivision)
 admin.site.register(Faculty)
 admin.site.register(Course)
-
 admin.site.register(TestData)
 
 
@@ -33,4 +32,4 @@ class TestResultPageAdmin(admin.ModelAdmin):
 @admin.register(QuestionaryData)
 class QuestionaryDataPageAdmin(admin.ModelAdmin):
     list_display = ('employee_kind', 'subdivision', 'faculty', 'course')
-    list_filter = ('employee_kind', 'subdivision', 'faculty', 'course')
+    list_filter = ('test', 'employee_kind', 'subdivision', 'faculty', 'course')
