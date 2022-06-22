@@ -102,7 +102,7 @@ class Question(models.Model):
         return self.question_text + ' ' + str(self.question_type)
 
     class Meta:
-        ordering = ('id',)
+        ordering = ('index_number',)
         verbose_name = 'Question'
         verbose_name_plural = '2 Questions'
 

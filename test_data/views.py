@@ -6,8 +6,8 @@ from .models import TestData, Subdivision, Faculty, Course, QuestionaryData, Emp
 from .models import SINGLE, MULTIPLE, TEXT
 from django.db import transaction
 
-EMPLOYEE_CADET_ID = 3
-EMPLOYEE_PPS_ID = 4
+EMPLOYEE_CADET_ID = 1
+EMPLOYEE_PPS_ID = 2
 
 
 def tests_list(request):
@@ -108,7 +108,7 @@ def dashboard_test_result(request, test_id):
     question_set = current_test.question_set.filter(question_type__in=[SINGLE, MULTIPLE])
     faculties_list = Faculty.objects.all()
     courses_list = Course.objects.all()
-    subdivision_list = Subdivision.objects.all()
+    subdivision_list = Subdivision.objects.filter(id__in=[1, 2, 3])
 
     cadet_results = TestResult.objects.filter(questionary_data__employee_kind_id=EMPLOYEE_CADET_ID)
     pps_results = TestResult.objects.filter(questionary_data__employee_kind_id=EMPLOYEE_PPS_ID)
