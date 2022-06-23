@@ -12,7 +12,7 @@ admin.site.register(TestData)
 @admin.register(Question)
 class QuestionPageAdmin(admin.ModelAdmin):
     list_display = ('question_text', 'question_type', 'test_data', 'index_number')
-    list_display_links = ('question_text',)
+    list_display_links = ('test_data',)
     search_fields = ['question_text']
     list_filter = ('test_data',)
     list_editable = ['question_text', 'index_number']

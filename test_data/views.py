@@ -5,14 +5,18 @@ from django.shortcuts import get_object_or_404
 from .models import TestData, Subdivision, Faculty, Course, QuestionaryData, EmployeeKind, TestResult, Answer
 from .models import SINGLE, MULTIPLE, TEXT
 from django.db import transaction
+from django.http import HttpResponse
 
 EMPLOYEE_CADET_ID = 1
 EMPLOYEE_PPS_ID = 2
 
 
 def tests_list(request):
-    all_tests_list = TestData.objects.all()
-    return render(request, 'test_data/test_list.html', {'all_tests_list': all_tests_list})
+    if request.user_agent.browser.family == 'IE':
+        return HttpResponse("Ваш браузер не поддерживается")
+    else:
+        all_tests_list = TestData.objects.all()
+        return render(request, 'test_data/test_list.html', {'all_tests_list': all_tests_list})
 
 
 @transaction.atomic
@@ -80,17 +84,20 @@ def tests_running(request, test_id):
             else:
                 pass
         return HttpResponseRedirect(reverse('test_data:success_page'))
-
     else:
-        current_test = get_object_or_404(TestData, pk=test_id)
-        return render(request, 'test_data/test_running.html',
-                      {
-                          'current_test': current_test,
-                          'employee_kinds': EmployeeKind.objects.all(),
-                          'subdivision_list': Subdivision.objects.all(),
-                          'faculties_list': Faculty.objects.all(),
-                          'courses_list': Course.objects.all(),
-                      })
+        if request.user_agent.browser.family == 'IE':
+            return HttpResponse("Ваш браузер не поддерживается")
+        else:
+
+            current_test = get_object_or_404(TestData, pk=test_id)
+            return render(request, 'test_data/test_running.html',
+                          {
+                              'current_test': current_test,
+                              'employee_kinds': EmployeeKind.objects.all(),
+                              'subdivision_list': Subdivision.objects.all(),
+                              'faculties_list': Faculty.objects.all(),
+                              'courses_list': Course.objects.all(),
+                          })
 
 
 def success_page(request):
